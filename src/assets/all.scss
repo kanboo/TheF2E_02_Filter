@@ -25,7 +25,7 @@ body {
 
 // header--------------------------------------------
 .header {
-  @include flex(center, center);
+  @include flex(center);
 
   width: 100%;
   background: $color-purple;
@@ -40,7 +40,7 @@ body {
     // width: 388px;
 
     height: 92px;
-    margin-right: 78px;
+    margin-left: 78px;
 
     .logo {
       margin-right: 149px;
@@ -75,6 +75,8 @@ body {
 
 // main--------------------------------------------
 .main {
+  @include flex(center);
+
   .container {
     @include flex(flex-start);
 
@@ -150,6 +152,7 @@ body {
     margin-left: 42px;
 
     .resultInfo {
+      height: 82px;
       margin: 24px 0;
       font-family: $font-family-remark;
       font-size: $font-size-title;
@@ -183,15 +186,22 @@ body {
 
     .resultList {
       .card {
-        @include outline(red);
-
+        // @include outline(red);
         @include flex(flex-start);
 
         margin-bottom: 24px;
+        transition: .3s;
+        background: #ffffff;
+
+        &:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 5px 10px hsla(0, 0%, 46%, .5);
+        }
 
         &__img {
           @include size(220px);
 
+          background-repeat: no-repeat;
           background-position: center;
           background-size: cover;
         }
@@ -210,7 +220,7 @@ body {
 
           .desc {
             overflow: hidden;
-            height: 50px;
+            height: 63px;
             margin-bottom: 16px;
           }
 

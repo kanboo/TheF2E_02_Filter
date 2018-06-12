@@ -7,7 +7,7 @@
           <img src="../assets/logo.png" class="logo" alt="HaveFun">
           <div class="searchBlock__search">
             <div class="searchIcon">
-              <font-awesome-icon :icon="['far', 'star']" />
+              <font-awesome-icon :icon="['fas', 'search']" />
             </div>
             <input type="text" class="searchInput" placeholder="Explore your own activities">
           </div>
@@ -22,17 +22,18 @@
             <div class="filter__header">
               <span class="subtitle">Location</span>
               <div class="headerIcon">
-                <font-awesome-icon :icon="['far', 'star']" />
+                <font-awesome-icon :icon="['fas', 'plus']" />
               </div>
             </div>
             <div class="filter__body">
               <el-select
                 v-model="filterLocation"
                 clearable
+                @change="updateFilter"
                 placeholder="請選擇地區">
 
                 <el-option
-                  v-for="item in options"
+                  v-for="item in zoneList"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -46,7 +47,7 @@
             <div class="filter__header">
               <span class="subtitle">Date</span>
               <div class="headerIcon">
-                <font-awesome-icon :icon="['far', 'star']" />
+                <font-awesome-icon :icon="['fas', 'plus']" />
               </div>
             </div>
             <div class="filter__body">
@@ -75,14 +76,18 @@
             <div class="filter__header">
               <span class="subtitle">Categories</span>
               <div class="headerIcon">
-                <font-awesome-icon :icon="['far', 'star']" />
+                <font-awesome-icon :icon="['fas', 'plus']" />
               </div>
             </div>
             <div class="filter__body">
               <el-checkbox-group v-model="filterCategories">
-                <el-checkbox label="复选框 A"></el-checkbox>
-                <el-checkbox label="复选框 B"></el-checkbox>
-                <el-checkbox label="复选框 C"></el-checkbox>
+                <el-checkbox
+                  v-for="item in categories"
+                  :label="item[0]"
+                  :key="item[0]"
+                  @change="updateFilter">
+                {{item[1]}}
+                </el-checkbox>
               </el-checkbox-group>
 
             </div>
@@ -92,35 +97,43 @@
         <section class="content">
           <div class="resultInfo">
             <h3>
-              Showing <span class="resultInfo--count">15</span> results by…
+              Showing <span class="resultInfo--count">{{filterCount}}</span> results by…
             </h3>
 
-            <span class="resultInfo--tag">
-              Koahsiung
-              <font-awesome-icon :icon="['far', 'star']" />
+            <span class="resultInfo--tag"
+              v-if="filterCategories.find(item => item === 'opentime')">
+              全天候開放
+              <font-awesome-icon :icon="['far', 'times-circle']" />
+            </span>
+            <span class="resultInfo--tag"
+              v-if="filterCategories.find(item => item === 'ticketinfo')">
+              免費參觀
+              <font-awesome-icon :icon="['far', 'times-circle']" />
             </span>
           </div>
           <ol class="resultList">
-            <li class="card" v-for="(item, index) in 3" :key="index">
-              <div class="card__img" style="background: url(https://picsum.photos/644/352/?random)">
+            <li class="card" v-for="(item, index) in filterDatas" :key="index">
+              <div class="card__img"
+              :style="{backgroundImage: `url(${item.Picture1})`}">
               </div>
               <div class="card__info">
-                <h2 class="title">Kogi Cosby</h2>
-                <p class="desc">Donec euismod scelerisque ligula. Maecenas eu varius risus, eu aliquet arcu. Curabitur fermentum suscipit est, tincidunt mattis lorem luctus id. Donec eget massa a diam condimentum pretium. Aliquam erat volutpat. Integer ut tincidunt orci. Etiam tristique, elit ut consectetur iaculis, metus lectus mattis justo, vel mollis eros neque quis augue. Sed lobortis ultrices lacus, a placerat metus rutrum sit amet. Aenean ut suscipit justo.</p>
+                <h2 class="title"> {{ item.Name }}</h2>
+                <p class="desc">{{ item.Description }}</p>
                 <div class="card__info__main">
-                  <span class="location">Ethan Foster</span>
-                  <span class="tag">Entertainment</span>
+                  <span class="location">{{ item.Zone }}</span>
+                  <span class="tag" v-if="item.Opentime">全天候開放</span>
+                  <span class="tag" v-if="item.Ticketinfo">免費參觀</span>
                 </div>
                 <div class="card__info__other">
                   <span class="otherIcon">
-                    <font-awesome-icon :icon="['far', 'star']" />
+                    <font-awesome-icon :icon="['fas', 'map-marker-alt']" />
                   </span>
-                  <span class="city">Taipei</span>
+                  <span class="city">{{ item.Zone }}</span>
                   <span class="otherIcon">
-                    <font-awesome-icon :icon="['far', 'star']" />
+                    <font-awesome-icon :icon="['far', 'calendar-alt']" />
                   </span>
                   <span class="date">
-                    2018/05/2132131
+                    {{item.Changetime.slice(0, 10)}}
                   </span>
                 </div>
               </div>
@@ -141,33 +154,71 @@ export default {
   name: 'index',
   data() {
     return {
-      options: [
-        {
-          value: '选项1',
-          label: '黄金糕'
-        },
-        {
-          value: '选项2',
-          label: '双皮奶'
-        },
-        {
-          value: '选项3',
-          label: '蚵仔煎'
-        },
-        {
-          value: '选项4',
-          label: '龙须面'
-        },
-        {
-          value: '选项5',
-          label: '北京烤鸭'
-        }
-      ],
+      filterDatas: {},
+      filterCount: 0,
       filterLocation: '',
       filterDateStart: '',
       filterDateEnd: '',
-      filterCategories: []
+      filterCategories: [],
+      zoneList: [],
+      categories: [['opentime', '全天候開放'], ['ticketinfo', '免費參觀']]
     };
+  },
+  created() {
+    const apiUrl =
+      'https://data.kcg.gov.tw/api/action/datastore_search?resource_id=92290ee5-6e61-456f-80c0-249eae2fcc97';
+    /* eslint-disable */
+
+    this.$http.get(apiUrl).then(response => {
+      /* eslint-disable no-console */
+      // console.log(response.data);
+
+      this.filterDatas = response.data.result.records || {};
+      this.filterCount = response.data.result.total || 0;
+
+      const zoneArr = response.data.result.records.map(item => item.Zone);
+
+      const zoneArrUnique = [...new Set(zoneArr)];
+
+      this.zoneList = zoneArrUnique.map(item => {
+        return {
+          value: item,
+          label: item
+        };
+      });
+      /* eslint-enable no-console */
+    });
+  },
+  methods: {
+    updateFilter() {
+      const apiUrl =
+        'https://data.kcg.gov.tw/api/action/datastore_search?resource_id=92290ee5-6e61-456f-80c0-249eae2fcc97';
+
+      const params = {};
+
+      if (this.filterLocation) params.Zone = this.filterLocation;
+      if (this.filterCategories.find(item => item === 'ticketinfo'))
+        params.Ticketinfo = '免費參觀';
+      if (this.filterCategories.find(item => item === 'opentime'))
+        params.Opentime = '全天候開放';
+
+      /* eslint-disable */
+      console.log('params', params);
+
+      this.$http
+        .get(apiUrl, {
+          params: {
+            q: JSON.stringify(params)
+          }
+        })
+        .then(response => {
+          /* eslint-disable no-console */
+          console.log(response.data);
+          this.filterDatas = response.data.result.records || {};
+          this.filterCount = response.data.result.total || 0;
+          /* eslint-enable no-console */
+        });
+    }
   },
   components: {
     FontAwesomeIcon
