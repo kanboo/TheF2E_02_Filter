@@ -1,0 +1,249 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i");
+
+@import "./public/_reset.scss";
+@import "./public/_variable.scss";
+@import "./public/_mixin.scss";
+
+//------------------------------------
+// Custom Style
+// @import './components/todo-nav';
+// @import './components/todo-item';
+//------------------------------------
+
+// --------------------------------------------
+*,*::before,*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: $color-bg-gray;
+  font-family: "Roboto", sans-serif;
+}
+// --------------------------------------------
+
+// header--------------------------------------------
+.header {
+  @include flex(center, center);
+
+  width: 100%;
+  background: $color-purple;
+
+  .container {
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .searchBlock {
+    @include flex(flex-start, center);
+    // width: 388px;
+
+    height: 92px;
+    margin-right: 78px;
+
+    .logo {
+      margin-right: 149px;
+    }
+
+    &__search {
+      @include flex(flex-start, center);
+
+      width: 388px;
+      border-bottom: 1px solid $color-white;
+
+      .searchIcon {
+        margin-right: 20px;
+        padding-bottom: 5px;
+        color: $color-white;
+        font-size: 24px;
+      }
+      input {
+        width: calc(100% - 28px);
+        padding-bottom: 5px;
+        color: $color-white;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        font-size: $font-size-placeholder;
+      }
+    }
+  }
+}
+
+// header--------------------------------------------
+
+// main--------------------------------------------
+.main {
+  .container {
+    @include flex(flex-start);
+
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .filters {
+    @include flex(center);
+
+    margin-left: 38px;
+
+    flex-flow: column wrap;
+
+    .filter {
+      // @include outline(red);
+      width: 300px;
+      padding: 0 40px;
+      border-bottom: 1px solid $color-gray-light3;
+      background: $color-gray-light2;
+
+      &__header {
+        // @include outline(blue);
+        @include flex(flex-start, center);
+
+        height: 64px;
+
+        .subtitle {
+          margin-right: auto;
+          font-family: $font-family-subtitle;
+          font-size: $font-size-title;
+          font-weight: bold;
+        }
+
+        .headerIcon {
+          font-size: 22px;
+        }
+      }
+
+      &__body {
+        padding-bottom: 24px;
+
+        .dateBlock {
+          @include flex(flex-end, center);
+        }
+
+        .el-date-editor {
+          width: 169px;
+          margin-left: 13px;
+        }
+
+        .el-checkbox-group {
+          @include flex(flex-start);
+
+          flex-flow: column nowrap;
+        }
+
+        .el-checkbox__label {
+          color: #000000;
+          font-family: $font-family-subtitle;
+          font-size: $font-size-label;
+        }
+
+        .el-checkbox + .el-checkbox {
+          margin-top: 10px;
+          margin-left: 0;
+        }
+      }
+    }
+  }
+
+  .content {
+    margin-left: 42px;
+
+    .resultInfo {
+      margin: 24px 0;
+      font-family: $font-family-remark;
+      font-size: $font-size-title;
+
+      &--count {
+        color: $color-purple;
+        font-size: bold;
+      }
+
+      &--tag {
+        display: inline-block;
+        margin-top: 8px;
+        margin-bottom: 5px;
+        padding: 0 15px;
+        cursor: pointer;
+        transition: all .3s;
+        color: $color-purple-light;
+        border: 1px solid $color-purple-light;
+        border-radius: 100px;
+        font-size: 16px;
+        font-weight: 100;
+        font-style: italic;
+        line-height: 35px;
+
+        &:hover {
+          color: #ffffff;
+          background-color: $color-purple-light;
+        }
+      }
+    }
+
+    .resultList {
+      .card {
+        @include outline(red);
+
+        @include flex(flex-start);
+
+        margin-bottom: 24px;
+
+        &__img {
+          @include size(220px);
+
+          background-position: center;
+          background-size: cover;
+        }
+
+        &__info {
+          width: 560px;
+          padding: 24px 0 24px 20px;
+
+          .title {
+            margin-bottom: 16px;
+            color: $color-purple;
+            font-family: $font-family-title;
+            font-size: $font-size-title;
+            font-weight: bold;
+          }
+
+          .desc {
+            overflow: hidden;
+            height: 50px;
+            margin-bottom: 16px;
+          }
+
+          &__main {
+            margin-bottom: 16px;
+
+            .location {
+              font-size: $font-size-remark;
+              font-weight: bold;
+            }
+            .tag {
+              display: inline-block;
+              margin: 0 3px;
+              padding: 0 15px;
+              color: #ffffff;
+              border-radius: 100px;
+              background: #d7d7d7;
+              font-size: 16px;
+              font-weight: 100;
+              font-style: italic;
+              line-height: 24px;
+            }
+          }
+
+          &__other {
+            .city,.date {
+              margin-right: 10px;
+              color: $color-gray-dark;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+// main--------------------------------------------
