@@ -141,6 +141,13 @@
     </main>
 
 
+    <button v-on:click="initMap">
+      Toggle
+    </button>
+    <transition name="fade">
+      <div id="map" v-show="show"></div>
+    </transition>
+
   </div>
 </template>
 
@@ -180,7 +187,8 @@ export default {
           filterName: 'Ticketinfo',
           filterValue: '免費參觀'
         }
-      ]
+      ],
+      show: true
     };
   },
   mounted() {
@@ -216,6 +224,16 @@ export default {
           };
         });
         /* eslint-enable no-console */
+
+        var uluru = { lat: 22.63961, lng: 120.30211 };
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
       });
   },
   methods: {
@@ -290,6 +308,20 @@ export default {
       });
 
       this.pageDatas = newData;
+    },
+    initMap() {
+      console.log('in~~~~map');
+      this.show = !this.show;
+
+      var uluru = { lat: 22.63961, lng: 120.30211 };
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
+        center: uluru
+      });
+      var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+      });
     }
   },
   computed: {
@@ -325,4 +357,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#map {
+  height: 400px;
+  width: 100%;
+  max-width: 600px;
+  position: fixed !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>
