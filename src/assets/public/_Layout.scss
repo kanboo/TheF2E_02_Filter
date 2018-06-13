@@ -56,6 +56,14 @@ h1,h2,h3,h4,h5,h6,span,p,a,input,button,div {
   font-family: $font-family-base;
 }
 
+input,input:focus,input:active {
+  user-select: text;
+}
+
+input,textarea {
+  font-size: initial;
+}
+
 img {
   display: block;
 }
