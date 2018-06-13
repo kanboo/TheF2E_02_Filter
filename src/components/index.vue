@@ -111,41 +111,30 @@
               <font-awesome-icon :icon="['far', 'times-circle']" />
             </span>
           </div>
-          <ol class="resultList">
-            <li class="card" v-for="(item, index) in currPageDatas" :key="index">
-              <div class="card__img"
-              :style="{backgroundImage: `url(${item.Picture1})`}">
-              </div>
-              <div class="card__info">
-                <h2 class="title"> {{ item.Name }}</h2>
-                <p class="desc">{{ item.Description }}</p>
-                <div class="card__info__main">
-                  <!-- <span class="location">{{ item.Zone }}</span> -->
-                  <span class="tag" v-if="item.Opentime === '全天候開放'">全天候開放</span>
-                  <span class="tag" v-if="item.Ticketinfo === '免費參觀'">免費參觀</span>
-                </div>
-                <div class="card__info__other">
-                  <span class="otherIcon">
-                    <font-awesome-icon :icon="['fas', 'map-marker-alt']" />
-                  </span>
-                  <span class="city">{{ item.Zone }}</span>
-                  <span class="otherIcon">
-                    <font-awesome-icon :icon="['far', 'calendar-alt']" />
-                  </span>
-                  <span class="date">
-                    {{item.Changetime.slice(0, 10)}}
-                  </span>
-                </div>
-              </div>
+          <transition-group name="list" tag="ol" class="resultList" mode="in-out">
+            <li is="card"
+              :item="item"
+              class="card"
+              v-for="item in currPageDatas"
+              :key="item.Id">
             </li>
-          </ol>
+          </transition-group>
+          <!-- <ol class="resultList">
+            <li is="card"
+              :item="item"
+              class="card"
+              v-for="(item, index) in currPageDatas"
+              :key="index">
+            </li>
+          </ol> -->
 
           <el-pagination
             background
             small
             :current-page.sync="currentPage"
             layout="prev, pager, next"
-            :total="filterCount">
+            :total="filterCount"
+            v-if="filterCount">
           </el-pagination>
         </section>
       </div>
@@ -157,11 +146,13 @@
 
 <script>
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
+import card from './card';
 
 export default {
   name: 'index',
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
+    card
   },
   data() {
     return {
