@@ -37,35 +37,69 @@ body {
 
   .searchBlock {
     @include flex(flex-start, center);
-    // width: 388px;
 
+    position: relative;
+    // width: 388px;
     height: 92px;
     margin-left: 78px;
 
+    @media screen and (max-width: $mq-pad) {
+      margin-left: 39px;
+    }
+    @media screen and (max-width: $mq-mobile) {
+      flex-direction: column;
+      justify-content: center;
+      height: 69px;
+      margin-left: 0;
+    }
+
     .logo {
       margin-right: 149px;
+
+      @media screen and (max-width: $mq-mobile) {
+        margin-right: 0;
+      }
     }
 
     &__search {
       @include flex(flex-start, center);
 
-      width: 388px;
+      width: 100%;
+      max-width: 388px;
       border-bottom: 1px solid $color-white;
+
+      @media screen and (max-width: $mq-mobile) {
+        position: absolute;
+        top: 82px;
+        max-width: 330px;
+        border-bottom: 1px solid $color-black;
+      }
 
       .searchIcon {
         margin-right: 20px;
         padding-bottom: 5px;
         color: $color-white;
         font-size: 24px;
+
+        @media screen and (max-width: $mq-mobile) {
+          color: $color-black;
+        }
       }
+
       input {
-        width: calc(100% - 28px);
+        width: 100%;
+        max-width: calc(100% - 28px);
         padding-bottom: 5px;
         color: $color-white;
         border: 0;
         outline: 0;
         background: transparent;
         font-size: $font-size-placeholder;
+
+        @media screen and (max-width: $mq-mobile) {
+          margin-right: 0;
+          color: $color-black;
+        }
       }
     }
   }
@@ -82,6 +116,12 @@ body {
 
     width: 100%;
     max-width: 1200px;
+
+    @media screen and (max-width: $mq-mobile) {
+      flex-direction: column;
+      align-items: center;
+      margin-top: 60px;
+    }
   }
 
   .filters {
@@ -91,12 +131,22 @@ body {
 
     flex-flow: column wrap;
 
+    @media screen and (max-width: $mq-pad) {
+      margin-left: 0;
+    }
+
     .filter {
       // @include outline(red);
-      width: 300px;
+      width: 100%;
+      max-width: 300px;
       padding: 0 40px;
       border-bottom: 1px solid $color-gray-light3;
       background: $color-gray-light2;
+
+      @media screen and (max-width: $mq-mobile) {
+        width: 100vw;
+        max-width: 100vw;
+      }
 
       &__header {
         // @include outline(blue);
@@ -144,6 +194,12 @@ body {
           margin-top: 10px;
           margin-left: 0;
         }
+
+        .el-select {
+          @media screen and (max-width: $mq-mobile) {
+            width: 90%;
+          }
+        }
       }
     }
   }
@@ -151,9 +207,17 @@ body {
   .content {
     margin-left: 42px;
 
+    @media screen and (max-width: $mq-pad) {
+      margin-left: 30px;
+    }
+
+    @media screen and (max-width: $mq-mobile) {
+      margin-left: 0;
+    }
+
     .resultInfo {
       height: 82px;
-      margin: 24px 0;
+      margin-top: 24px;
       font-family: $font-family-remark;
       font-size: $font-size-title;
 
@@ -165,6 +229,7 @@ body {
       &--tag {
         display: inline-block;
         margin-top: 8px;
+        margin-right: 10px;
         margin-bottom: 5px;
         padding: 0 15px;
         cursor: pointer;
@@ -189,9 +254,14 @@ body {
         // @include outline(red);
         @include flex(flex-start);
 
+        margin-top: 20px;
         margin-bottom: 24px;
         transition: .3s;
         background: #ffffff;
+
+        @media screen and (max-width: $mq-pad) {
+          flex-flow: column wrap;
+        }
 
         &:hover {
           transform: translateY(-3px);
@@ -199,16 +269,44 @@ body {
         }
 
         &__img {
-          @include size(220px);
-
+          // @include size(220px);
+          width: 100%;
+          max-width: 220px;
+          height: 220px;
           background-repeat: no-repeat;
           background-position: center;
           background-size: cover;
+
+          @media screen and (max-width: $mq-pad) {
+            // @include size(410px, 196px);
+            max-width: 410px;
+            height: 196px;
+          }
+
+          @media screen and (max-width: $mq-mobile) {
+            // @include size(334px, 196px);
+            max-width: 334px;
+          }
         }
 
         &__info {
-          width: 560px;
+          @include flex(flex-start);
+
+          width: 100%;
+          max-width: 560px;
+          height: 220px;
           padding: 24px 0 24px 20px;
+
+          flex-flow: column wrap;
+
+          @media screen and (max-width: $mq-pad) {
+            max-width: 410px;
+            height: auto;
+          }
+
+          @media screen and (max-width: $mq-mobile) {
+            max-width: 334px;
+          }
 
           .title {
             margin-bottom: 16px;
@@ -222,6 +320,7 @@ body {
             overflow: hidden;
             height: 63px;
             margin-bottom: 16px;
+            padding-right: 40px;
           }
 
           &__main {
@@ -246,6 +345,8 @@ body {
           }
 
           &__other {
+            margin-top: auto;
+
             .city,.date {
               margin-right: 10px;
               color: $color-gray-dark;
@@ -254,6 +355,16 @@ body {
         }
       }
     }
+
+    .el-pagination {
+      text-align: center;
+    }
   }
 }
 // main--------------------------------------------
+
+.hidden-mobile {
+  @media screen and (max-width: $mq-mobile) {
+    display: none;
+  }
+}
