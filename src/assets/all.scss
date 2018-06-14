@@ -4,12 +4,6 @@
 @import "./public/_variable.scss";
 @import "./public/_mixin.scss";
 
-//------------------------------------
-// Custom Style
-// @import './components/todo-nav';
-// @import './components/todo-item';
-//------------------------------------
-
 // --------------------------------------------
 *,*::before,*::after {
   box-sizing: border-box;
@@ -205,6 +199,7 @@ body {
   }
 
   .content {
+    max-width: 100%;
     margin-left: 42px;
 
     @media screen and (max-width: $mq-pad) {
@@ -250,10 +245,17 @@ body {
     }
 
     .resultList {
+      // width: 100%;
+      // max-width: 780px;
+      width: 100%;
+      max-width: 780px;
+
       .card {
         // @include outline(red);
         @include flex(flex-start);
 
+        width: 100%;
+        max-width: 780px;
         margin-top: 20px;
         margin-bottom: 24px;
         transition: .3s;
@@ -293,7 +295,6 @@ body {
           @include flex(flex-start);
 
           width: 100%;
-          max-width: 560px;
           height: 220px;
           padding: 24px 0 24px 20px;
 
@@ -318,13 +319,13 @@ body {
 
           .desc {
             overflow: hidden;
-            height: 63px;
+            height: 53px;
             margin-bottom: 16px;
             padding-right: 40px;
           }
 
           &__main {
-            margin-bottom: 16px;
+            // margin-bottom: 16px;
 
             .location {
               font-size: $font-size-remark;
@@ -357,11 +358,67 @@ body {
     }
 
     .el-pagination {
-      text-align: center;
+      text-align: right;
     }
   }
 }
 // main--------------------------------------------
+
+// map--------------------------------------------
+
+.map__block {
+  position: fixed !important;
+  z-index: 999;
+  bottom: 40px;
+  left: 50%;
+  overflow: hidden;
+  width: 100%;
+  max-width: 700px;
+  transform: translateX(-50%);
+  border: .5px solid $color-gray-light3;
+  border-radius: 3px;
+  background: $color-gray-light3;
+  box-shadow: 0 0 0 5000px rgba(0, 0, 0, .5);
+
+  &__info {
+    @include flex(flex-start);
+
+    position: relative;
+    width: 100%;
+    height: 70px;
+    padding: 0 20px;
+    border-bottom: 1px dashed #000000;
+
+    flex-flow: column wrap;
+
+    .title {
+      margin-top: 13px;
+      color: #35495e;
+      font-family: "Roboto-Medium;";
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .add {
+      margin-left: 24px;
+      color: #35495e;
+      font-size: 14px;
+    }
+    .bt-closeMap {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      color: #35495e;
+      font-size: 32px;
+    }
+  }
+
+  &__location {
+    width: 100%;
+    height: 450px;
+    padding: 5px;
+  }
+}
+// map--------------------------------------------
 
 .hidden-mobile {
   @media screen and (max-width: $mq-mobile) {
@@ -376,5 +433,13 @@ body {
 .list-enter,.list-leave-to
 /* .list-leave-active for below version 2.1.8 */ {
   transform: translateX(30px);
+  opacity: 0;
+}
+
+.fade-enter-active,.fade-leave-active {
+  transition: all .8s;
+}
+.fade-enter,.fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  transform: translateX(-50%) translateY(100%);
   opacity: 0;
 }

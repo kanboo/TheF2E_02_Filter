@@ -1,5 +1,5 @@
 <template>
-  <li class="card">
+  <li class="card" @click="s_showMap(item)">
     <div class="card__img"
     :style="{backgroundImage: `url(${item.Picture1})`}">
     </div>
@@ -12,16 +12,21 @@
         <span class="tag" v-if="item.Ticketinfo === '免費參觀'">免費參觀</span>
       </div>
       <div class="card__info__other">
-        <span class="otherIcon">
+        <!-- <span class="otherIcon">
           <font-awesome-icon :icon="['fas', 'map-marker-alt']" />
         </span>
-        <span class="city">{{ item.Zone }}</span>
+        <span class="city">{{ item.Zone }}</span> -->
         <span class="otherIcon">
           <font-awesome-icon :icon="['far', 'calendar-alt']" />
         </span>
-        <span class="date">
+        <span class="date" >
           {{item.Changetime.slice(0, 10)}}
         </span>
+
+        <a href="javascript:;" class="otherIcon" @click="s_showMap(item)">
+          <font-awesome-icon :icon="['fas', 'map-marker-alt']" />
+          <span class="city">{{ item.Zone }}</span>
+        </a>
       </div>
     </div>
   </li>
@@ -40,6 +45,11 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App'
     };
+  },
+  methods: {
+    s_showMap(data) {
+      this.$emit('f_showMap', data);
+    }
   }
 };
 </script>

@@ -103,6 +103,7 @@
             <h3>
               Showing <span class="resultInfo--count">{{filterCount}}</span> results by…
             </h3>
+
             <span class="resultInfo--tag"
               v-for="(item, index) in getTag" :key="index"
               @click="cleanFilterCondition(item)"
@@ -111,29 +112,23 @@
               <font-awesome-icon :icon="['far', 'times-circle']" />
             </span>
           </div>
+
           <transition-group name="list" tag="ol" class="resultList" mode="in-out">
             <li is="card"
+              @f_showMap="initMap"
               :item="item"
               class="card"
               v-for="item in currPageDatas"
               :key="item.Id">
             </li>
           </transition-group>
-          <!-- <ol class="resultList">
-            <li is="card"
-              :item="item"
-              class="card"
-              v-for="(item, index) in currPageDatas"
-              :key="index">
-            </li>
-          </ol> -->
 
           <el-pagination
             background
-            small
             :current-page.sync="currentPage"
             layout="prev, pager, next"
             :total="filterCount"
+            :pager-count="5"
             v-if="filterCount">
           </el-pagination>
         </section>
@@ -141,11 +136,23 @@
     </main>
 
 
-    <button v-on:click="initMap">
-      Toggle
-    </button>
     <transition name="fade">
-      <div id="map" v-show="show"></div>
+
+      <div class="map__block" v-show="show" >
+        <div class="map__block__info">
+          <h2 class="title">
+            <font-awesome-icon :icon="['fas', 'map-marker-alt']" />
+            {{ mapInfo.Name }}
+          </h2>
+          <span class="add"> {{ mapInfo.Add }}</span>
+          <a href="javascript:;" class="bt-closeMap" @click="closeMap">
+            ×
+          </a>
+        </div>
+
+        <div id="map" class="map__block__location"></div>
+      </div>
+
     </transition>
 
   </div>
@@ -188,7 +195,8 @@ export default {
           filterValue: '免費參觀'
         }
       ],
-      show: true
+      show: false,
+      mapInfo: ''
     };
   },
   mounted() {
@@ -309,19 +317,23 @@ export default {
 
       this.pageDatas = newData;
     },
-    initMap() {
-      console.log('in~~~~map');
-      this.show = !this.show;
+    initMap(data) {
+      this.show = true;
+      this.mapInfo = JSON.parse(JSON.stringify(data));
 
-      var uluru = { lat: 22.63961, lng: 120.30211 };
-      var map = new google.maps.Map(document.getElementById('map'), {
+      const uluru = { lat: +data.Py, lng: +data.Px };
+      const map = new google.maps.Map(document.getElementById('map'), {
         zoom: 16,
         center: uluru
       });
-      var marker = new google.maps.Marker({
+      const marker = new google.maps.Marker({
         position: uluru,
         map: map
       });
+    },
+    closeMap() {
+      this.show = false;
+      this.mapInfo = '';
     }
   },
   computed: {
@@ -356,22 +368,5 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-#map {
-  height: 400px;
-  width: 100%;
-  max-width: 600px;
-  position: fixed !important;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
+<style scoped lan="scss">
 </style>
