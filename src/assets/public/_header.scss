@@ -1,0 +1,80 @@
+.header {
+  @include flex(center);
+
+  width: 100%;
+  background: $color-purple;
+
+  .container {
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .searchBlock {
+    @include flex(flex-start, center);
+
+    position: relative;
+    // width: 388px;
+    height: 92px;
+    margin-left: 78px;
+
+    @media screen and (max-width: $mq-pad) {
+      margin-left: 39px;
+    }
+    @media screen and (max-width: $mq-mobile) {
+      flex-direction: column;
+      justify-content: center;
+      height: 69px;
+      margin-left: 0;
+    }
+
+    .logo {
+      margin-right: 149px;
+
+      @media screen and (max-width: $mq-mobile) {
+        margin-right: 0;
+      }
+    }
+
+    &__search {
+      @include flex(flex-start, center);
+
+      width: 100%;
+      max-width: 388px;
+      border-bottom: 1px solid $color-white;
+
+      @media screen and (max-width: $mq-mobile) {
+        position: absolute;
+        top: 82px;
+        max-width: 330px;
+        border-bottom: 1px solid $color-black;
+      }
+
+      .searchIcon {
+        margin-right: 20px;
+        padding-bottom: 5px;
+        color: $color-white;
+        font-size: 24px;
+
+        @media screen and (max-width: $mq-mobile) {
+          color: $color-black;
+        }
+      }
+
+      input {
+        width: 100%;
+        max-width: calc(100% - 28px);
+        padding-bottom: 5px;
+        color: $color-white;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        font-size: $font-size-placeholder;
+
+        @media screen and (max-width: $mq-mobile) {
+          margin-right: 0;
+          color: $color-black;
+        }
+      }
+    }
+  }
+}
