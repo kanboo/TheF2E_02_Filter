@@ -26,7 +26,7 @@
             <div class="filter__header">
               <span class="subtitle">地區</span>
               <div class="headerIcon">
-                <font-awesome-icon :icon="['fas', 'plus']" />
+                <font-awesome-icon :icon="['fas', 'map-marker-alt']" />
               </div>
             </div>
             <div class="filter__body">
@@ -68,44 +68,17 @@
             </div>
           </div>
 
-          <div class="filter" v-if="false">
-            <div class="filter__header">
-              <span class="subtitle">最後更新日期</span>
-              <div class="headerIcon">
-                <font-awesome-icon :icon="['fas', 'plus']" />
-              </div>
-            </div>
-            <div class="filter__body">
-              <div class="dateBlock">
-                <span class="demonstration">from</span>
-                <el-date-picker
-                  v-model="selectDateStart"
-                  type="date"
-                  class="dateSelect"
-                  placeholder="选择日期">
-                </el-date-picker>
-              </div>
-              <div class="dateBlock">
-                <span class="demonstration">to</span>
-                <el-date-picker
-                  v-model="selectDateEnd"
-                  type="date"
-                  class="dateSelect"
-                  placeholder="选择日期">
-                </el-date-picker>
-              </div>
-            </div>
-          </div>
         </section>
 
         <section class="content">
+          <!-- 表頭資訊 -->
           <div class="resultInfo hidden-mobile">
             <h3>
-              Showing <span class="resultInfo--count">{{filterCount}}</span> results by…
+              目前顯示結果：共 <span class="resultInfo--count">{{filterCount}}</span> 筆
             </h3>
 
             <span class="resultInfo--tag"
-              v-for="(item, index) in getTag" :key="index"
+              v-for="(item, index) in currFilterTag" :key="index"
               @click="cleanFilterCondition(item)"
               >
               {{item.tagValue}}
@@ -113,6 +86,7 @@
             </span>
           </div>
 
+          <!-- 內容 -->
           <transition-group name="list" tag="ol" class="resultList" mode="in-out">
             <li is="card"
               @f_showMap="initMap"
@@ -123,6 +97,7 @@
             </li>
           </transition-group>
 
+          <!-- 分頁 -->
           <el-pagination
             background
             :current-page.sync="currentPage"
@@ -170,21 +145,9 @@ export default {
   },
   data() {
     return {
-      // 篩選後資料
-      filterCount: 0,
-      filterDatas: [],
-      // 分頁資料
-      currentPage: 0,
-      pageDatas: [],
-      // 過濾條件
-      searchText: '',
-      selectLocation: '',
-      selectDateStart: '',
-      selectDateEnd: '',
-      selectCategories: [],
-      // 全部地區
+      // 全部旅遊資訊、地區資訊、分類選項
+      KSdatas: [],
       zoneList: [],
-      // 分類
       categories: [
         {
           filterName: 'Opentime',
@@ -195,13 +158,24 @@ export default {
           filterValue: '免費參觀'
         }
       ],
+      // 篩選後資料
+      filterCount: 0,
+      filterDatas: [],
+      // 分頁資料
+      currentPage: 0,
+      pageDatas: [],
+      // 過濾條件
+      searchText: '',
+      selectLocation: '',
+      selectCategories: [],
+      // 地圖開關及資訊
       show: false,
       mapInfo: ''
     };
   },
   mounted() {
-    const apiUrl = 'https://data.kcg.gov.tw/api/action/datastore_search';
     /* eslint-disable */
+    const apiUrl = 'https://data.kcg.gov.tw/api/action/datastore_search';
 
     const params = {
       resource_id: '92290ee5-6e61-456f-80c0-249eae2fcc97',
@@ -216,12 +190,12 @@ export default {
         /* eslint-disable no-console */
         // console.log(response.data);
 
-        this.filterDatas = response.data.result.records || {};
-        this.filterCount = response.data.result.total || 0;
+        this.KSdatas = response.data.result.records || {};
 
-        this.computedPageDatas();
+        this.filterDatas = this.KSdatas;
+        this.filterCount = this.KSdatas.length;
 
-        // 篩選出 地區
+        // 篩選出 地區資訊
         const zoneArr = response.data.result.records.map(item => item.Zone);
         const zoneArrUnique = [...new Set(zoneArr)];
 
@@ -231,74 +205,37 @@ export default {
             value: item
           };
         });
-        /* eslint-enable no-console */
 
-        var uluru = { lat: 22.63961, lng: 120.30211 };
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 16,
-          center: uluru
-        });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
+        // 計算分頁資料
+        this.computedPageDatas();
+        /* eslint-enable no-console */
       });
   },
   methods: {
+    // 更新搜尋結果
     updateFilter() {
-      // 過濾條件----------------------------------------Start
+      // 取得 選擇分類的資訊
       const filterCondition = {};
 
-      // 地區
-      if (this.selectLocation) filterCondition.Zone = this.selectLocation;
-
-      // 分類
       this.categories.map(item => {
         if (this.selectCategories.find(value => item.filterName === value))
           filterCondition[item.filterName] = item.filterValue;
       });
 
-      /* eslint-disable no-console */
-      // console.log('filterCondition', filterCondition);
-      /* eslint-enable no-console */
-      // 過濾條件-------------------------------------------End
-
-      // API+過濾條件
-      const apiUrl = 'https://data.kcg.gov.tw/api/action/datastore_search';
-      const params = {
-        resource_id: '92290ee5-6e61-456f-80c0-249eae2fcc97',
-        limit: 999,
-        q: this.searchText,
-        filters: JSON.stringify(filterCondition)
-      };
-
-      this.$http
-        .get(apiUrl, {
-          params: params
-        })
-        .then(response => {
-          /* eslint-disable no-console */
-          // console.log(response.data);
-          this.filterDatas = response.data.result.records || {};
-          this.filterCount = response.data.result.total || 0;
-          this.computedPageDatas();
-          /* eslint-enable no-console */
-        });
-    },
-    cleanFilterCondition(obj) {
-      /* eslint-disable no-console */
-
-      // 清除地區
-      if (obj.tagName === 'Zone') this.selectLocation = '';
-
-      // 清除分類
-      var newArr = this.selectCategories.filter(function(value) {
-        return value !== obj.tagName;
+      // 開始篩選資料
+      this.filterDatas = this.KSdatas.filter(item => {
+        return (
+          this.isMatchLocation(item, this.selectLocation) &&
+          this.isMatchInput(item, this.searchText) &&
+          this.isMatchCategories(item, filterCondition)
+        );
       });
 
-      this.selectCategories = newArr;
-      this.updateFilter();
+      this.filterCount = this.filterDatas.length || 0;
+
+      this.computedPageDatas(); // 計算分頁資料
     },
+    // 計算分頁資料
     computedPageDatas() {
       const sourceData = this.filterDatas;
       const newData = [];
@@ -315,8 +252,48 @@ export default {
         newData[page].push(item);
       });
 
+      this.currentPage = 0;
       this.pageDatas = newData;
     },
+    // 清除搜尋條件
+    cleanFilterCondition(obj) {
+      /* eslint-disable no-console */
+
+      // 清除搜尋文件
+      if (obj.tagName === 'searchText') this.searchText = '';
+
+      // 清除地區
+      if (obj.tagName === 'Zone') this.selectLocation = '';
+
+      // 清除分類
+      var newArr = this.selectCategories.filter(value => {
+        return value !== obj.tagName;
+      });
+
+      this.selectCategories = newArr;
+      this.updateFilter();
+    },
+    isMatchLocation(SearchData, SearchString) {
+      return SearchString === '' || SearchData.Zone === SearchString;
+    },
+    isMatchInput(SearchData, SearchString) {
+      const regex = new RegExp(SearchString, 'gi');
+      return (
+        SearchData.Name.match(regex) || SearchData.Description.match(regex)
+      );
+    },
+    isMatchCategories(SearchData, SearchItems) {
+      if (Object.keys(SearchItems).length === 0) return true;
+
+      let isMatch = true;
+
+      Object.keys(SearchItems).forEach(key => {
+        if (SearchData[key] !== SearchItems[key]) isMatch = false;
+      });
+
+      return isMatch;
+    },
+    // 顯示地圖
     initMap(data) {
       this.show = true;
       this.mapInfo = JSON.parse(JSON.stringify(data));
@@ -337,8 +314,17 @@ export default {
     }
   },
   computed: {
-    getTag() {
+    currFilterTag() {
       const tag = [];
+
+      // 搜尋文字
+      if (this.searchText) {
+        tag.push({
+          tagName: 'searchText',
+          tagValue: this.searchText
+        });
+      }
+
       // 地區
       if (this.selectLocation) {
         tag.push({
@@ -349,11 +335,12 @@ export default {
 
       // 分類
       this.categories.map(item => {
-        if (this.selectCategories.find(value => item.filterName === value))
+        if (this.selectCategories.find(value => item.filterName === value)) {
           tag.push({
             tagName: item.filterName,
             tagValue: item.filterValue
           });
+        }
       });
 
       // console.log('tag', tag);

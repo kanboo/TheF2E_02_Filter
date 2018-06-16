@@ -206,7 +206,7 @@
           }
 
           .title {
-            margin-bottom: 16px;
+            margin-bottom: 5px;
             color: $color-purple;
             font-family: $font-family-title;
             font-size: $font-size-title;
@@ -242,6 +242,9 @@
           }
 
           &__other {
+            @include flex(flext-start);
+
+            flex-direction: column;
             margin-top: auto;
 
             .city,.date {
