@@ -130,6 +130,7 @@
 
     </transition>
 
+    <div is='Footer'></div>
   </div>
 </template>
 
@@ -137,12 +138,14 @@
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import { _ } from 'vue-underscore';
 import card from './card';
+import Footer from './Footer';
 
 export default {
   name: 'index',
   components: {
     FontAwesomeIcon,
-    card
+    card,
+    Footer
   },
   data() {
     return {

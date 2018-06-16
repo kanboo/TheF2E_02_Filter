@@ -1,6 +1,8 @@
 .main {
   @include flex(center);
 
+  margin-bottom: 70px;
+
   .container {
     @include flex(flex-start);
 

@@ -13,6 +13,7 @@ import faMapMarkerAlt from '@fortawesome/fontawesome-free-solid/faMapMarkerAlt';
 import faPlus from '@fortawesome/fontawesome-free-solid/faPlus';
 import faTimesCircle from '@fortawesome/fontawesome-free-regular/faTimesCircle';
 import faCalendarAlt from '@fortawesome/fontawesome-free-regular/faCalendarAlt';
+import faGithub from '@fortawesome/fontawesome-free-brands/faGithub';
 
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/all.scss';
@@ -25,7 +26,8 @@ fontawesome.library.add(
   faPlus,
   faCalendarAlt,
   faTimesCircle,
-  faMapMarkerAlt
+  faMapMarkerAlt,
+  faGithub
 );
 Vue.use(VueAxios, axios);
 Vue.use(ElementUI);

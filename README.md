@@ -1,21 +1,15 @@
 # TheF2E_02_Filter
 
-> A Vue.js project
+使用工具： Vue + SCSS
 
-## Build Setup
+第三方套件： [Font Awesome](https://fontawesome.com/) 、 [Element](http://element.eleme.io/#/zh-CN)、[vue-underscore](https://github.com/HKskn/vue-underscore)
 
-```bash
-# install dependencies
-npm install
+主要目標： 手刻 CSS、RWD 、 Vue 的運用(components、$emit) 、 GoogleMap
 
-# serve with hot reload at localhost:8080
-npm run dev
+Demo 連結：[Filter](https://kanboo.github.io/TheF2E_02_Filter/dist/)
 
-# build for production with minification
-npm run build
+# 資源
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+Filter 設計稿：[Link](https://hexschool.github.io/THE_F2E_Design/week2-filter/)
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+The F2E - 前端修練精神時光屋：[Link](https://www.facebook.com/groups/173311386703334/)
