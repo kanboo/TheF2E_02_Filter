@@ -23,7 +23,8 @@
     "sass-loader": "^7.0.3",
     "vue": "^2.5.2",
     "vue-awesome": "^2.3.7",
-    "vue-axios": "^2.1.1"
+    "vue-axios": "^2.1.1",
+    "vue-underscore": "^0.1.4"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

@@ -135,6 +135,7 @@
 
 <script>
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
+import { _ } from 'vue-underscore';
 import card from './card';
 
 export default {
@@ -213,7 +214,7 @@ export default {
   },
   methods: {
     // 更新搜尋結果
-    updateFilter() {
+    updateFilter: _.debounce(function() {
       // 取得 選擇分類的資訊
       const filterCondition = {};
 
@@ -234,7 +235,7 @@ export default {
       this.filterCount = this.filterDatas.length || 0;
 
       this.computedPageDatas(); // 計算分頁資料
-    },
+    }, 1000),
     // 計算分頁資料
     computedPageDatas() {
       const sourceData = this.filterDatas;
