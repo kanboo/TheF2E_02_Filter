@@ -17,14 +17,14 @@
           <span class="otherIcon">
             <font-awesome-icon :icon="['fas', 'map-marker-alt']" />
           </span>
-          {{ item.Add }}
+          {{ item.Add.length > 30 ? item.Add.slice(0,30)+"..." : item.Add}}
         </span>
 
         <span class="date" >
           <span class="otherIcon">
             <font-awesome-icon :icon="['far', 'calendar-alt']" />
           </span>
-          {{item.Opentime}}
+          {{ item.Opentime.length > 30 ? item.Opentime.slice(0,30)+"..." : item.Opentime}}
         </span>
       </div>
     </div>
