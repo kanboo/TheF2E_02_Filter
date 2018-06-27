@@ -8,6 +8,12 @@
 
 Demo 連結：[Filter](https://kanboo.github.io/TheF2E_02_Filter/dist/)
 
+# Preview
+
+![Image](https://raw.githubusercontent.com/kanboo/TheF2E_02_Filter/master/SideProjectImage/Filter_01.jpg)
+
+![Image](https://raw.githubusercontent.com/kanboo/TheF2E_02_Filter/master/SideProjectImage/Filter_02.jpg)
+
 # 資源
 
 Filter 設計稿：[Link](https://hexschool.github.io/THE_F2E_Design/week2-filter/)
