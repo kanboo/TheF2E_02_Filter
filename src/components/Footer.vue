@@ -1,7 +1,7 @@
 <template>
   <footer class="footer">
     <div class="footer__text">
-      <span>Filter - The F2E 前端修練精神時光屋</span>
+      <span>過濾清單 Filter</span>
       <span>|</span>
 
       <span class="author">
@@ -62,7 +62,7 @@ export default {
   }
   &__link {
     // width: 100px;
-    transition: transform .4s;
+    transition: transform 0.4s;
     text-align: center;
     color: #ffffff;
     font-size: 24px;
@@ -78,5 +78,4 @@ export default {
     }
   }
 }
-
 </style>
